@@ -10,36 +10,13 @@
         theme: {
           extend: {
             colors: {
-              brand: {
-                50: '#fff1f2',
-                100: '#ffe4e6',
-                200: '#fecdd3',
-                300: '#fda4af',
-                400: '#fb7185',
-                500: '#f43f5e',
-                600: '#e11d48',
-                700: '#be123c',
-                800: '#9f1239',
-                900: '#881337',
-                950: '#4c0519',
-              },
-              jungle: {
-                100: '#dcfce7',
-                500: '#22c55e',
-                800: '#166534',
-                900: '#14532d', // Deep green like the logo text
-                950: '#052e16',
-              },
-              luxe: {
-                bg: '#0a0a0a',
-                gold: '#D4AF37',
-                text: '#e5e5e5'
-              },
-              tropical: {
-                cream: '#FFFBEB', // Amber 50
-                mango: '#F59E0B',
-                teal: '#115E59'
-              }
+              jungle: '#1F4E33',
+              chili: '#C7432A',
+              flame: '#E5812A',
+              mango: '#F2B43A',
+              cream: '#FFF5E1',
+              ink: '#0A0A0A',
+              // Semantic aliases for easier theme mapping if needed, or direct usage
             },
             fontFamily: {
               sans: ['Inter', 'sans-serif'],
@@ -48,11 +25,16 @@
             },
             animation: {
               'fade-in': 'fadeIn 0.5s ease-in-out',
+              'scroll': 'scroll 20s linear infinite',
             },
             keyframes: {
               fadeIn: {
                 '0%': { opacity: '0' },
                 '100%': { opacity: '1' },
+              },
+              scroll: {
+                '0%': { transform: 'translateX(0)' },
+                '100%': { transform: 'translateX(-100%)' },
               }
             }
           }
@@ -74,5 +56,16 @@
 </head>
   <body>
     <div id="root"></div>
+    
+    <!-- Global SVG Noise Filter Definition -->
+    <svg style="display: none;">
+      <filter id="noiseFilter">
+        <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/>
+        <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+        <feComponentTransfer>
+            <feFuncA type="table" tableValues="0 0.5"/>
+        </feComponentTransfer>
+      </filter>
+    </svg>
   </body>
 </html>

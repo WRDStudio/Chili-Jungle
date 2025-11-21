@@ -1,14 +1,16 @@
+
 import React from 'react';
 import { Instagram, Mail } from 'lucide-react';
 import { useRitual } from '../contexts/RitualContext';
+import { Logo } from './Logo';
 
 export const Footer: React.FC = () => {
   const { mode } = useRitual();
 
   const getFooterStyles = () => {
-    if (mode === 'luxe') return 'bg-neutral-950 text-gray-400 border-t border-white/10';
-    if (mode === 'tropical') return 'bg-tropical-cream text-jungle-900 border-t border-tropical-mango/20';
-    return 'bg-jungle-900 text-brand-100';
+    if (mode === 'luxe') return 'bg-ink text-gray-400 border-t border-mango/10';
+    if (mode === 'tropical') return 'bg-cream text-jungle border-t border-mango/20';
+    return 'bg-jungle text-cream'; // Classic default footer
   };
 
   return (
@@ -17,14 +19,10 @@ export const Footer: React.FC = () => {
         
         {/* Brand */}
         <div>
-          <div className="mb-6">
-             <img 
-              src="https://i.ibb.co/wzy1d0L/logo-nobg.png" 
-              alt="Chili Jungle Logo" 
-              className="h-20 w-auto opacity-90"
-            />
+          <div className="mb-6 w-48">
+            <Logo variant="full" lightMode={mode !== 'tropical'} />
           </div>
-          <p className="font-serif text-sm italic opacity-80 mb-6 max-w-xs">
+          <p className="font-serif text-sm italic opacity-80 mb-6 max-w-xs leading-relaxed">
             Spice from Paradise. Handcrafted in Tamarindo, Costa Rica.
             <br/><br/>
             Una salsa, tres rituales.
@@ -37,8 +35,8 @@ export const Footer: React.FC = () => {
 
         {/* Quick Links */}
         <div className="pt-4">
-           <h4 className="text-xs font-bold uppercase tracking-widest mb-6 opacity-50 border-b border-current inline-block pb-1">Menu</h4>
-           <ul className="space-y-3 text-sm font-bold uppercase tracking-wider">
+           <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6 opacity-50 border-b border-current inline-block pb-1">Menu</h4>
+           <ul className="space-y-3 text-xs font-bold uppercase tracking-[0.15em]">
              <li><a href="#products" className="hover:opacity-70 transition-opacity">Productos</a></li>
              <li><a href="#rituals" className="hover:opacity-70 transition-opacity">Rituales</a></li>
              <li><a href="#studio" className="hover:opacity-70 transition-opacity">Jungle Studio</a></li>
@@ -48,7 +46,7 @@ export const Footer: React.FC = () => {
 
         {/* Legal / Credits */}
         <div className="pt-4">
-          <h4 className="text-xs font-bold uppercase tracking-widest mb-6 opacity-50 border-b border-current inline-block pb-1">Studio Info</h4>
+          <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6 opacity-50 border-b border-current inline-block pb-1">Studio Info</h4>
            <ul className="space-y-3 text-xs font-mono opacity-70">
              <li>Become a Distributor</li>
              <li>Shipping Policy</li>

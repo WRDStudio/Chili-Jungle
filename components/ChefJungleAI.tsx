@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Sparkles, Loader2, ChefHat } from 'lucide-react';
 import { generateRecipePairing } from '../services/geminiService';
@@ -36,12 +37,12 @@ export const ChefJungleAI: React.FC = () => {
         <div className="text-center mb-12">
            <div className={`inline-flex items-center gap-2 px-4 py-1 rounded-full border ${theme.border} mb-4`}>
              <Sparkles size={14} className={theme.accent} />
-             <span className={`text-xs font-bold uppercase tracking-widest ${theme.text}`}>AI Pairing Assistant</span>
+             <span className={`text-[10px] font-bold uppercase tracking-[0.2em] ${theme.text}`}>AI Pairing Assistant</span>
            </div>
-           <h2 className={`text-4xl md:text-5xl font-display font-bold uppercase ${theme.text}`}>
+           <h2 className={`text-5xl md:text-6xl font-display font-bold uppercase tracking-tighter ${theme.text}`}>
              ¿Qué vas a comer?
            </h2>
-           <p className={`mt-4 font-serif italic ${theme.text} opacity-70`}>
+           <p className={`mt-4 font-serif italic text-lg ${theme.text} opacity-70`}>
              Dinos tu plato, y el Chef Jungle te dirá cómo elevarlo.
            </p>
         </div>
@@ -54,12 +55,12 @@ export const ChefJungleAI: React.FC = () => {
               onChange={(e) => setFoodInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleGenerate()}
               placeholder="ej. Pizza fría, Aguacate, Helado de vainilla..."
-              className={`flex-1 bg-transparent border-b-2 ${theme.border} ${theme.text} py-4 text-xl focus:outline-none focus:border-current placeholder-gray-500`}
+              className={`flex-1 bg-transparent border-b-2 ${theme.border} ${theme.text} py-4 text-xl focus:outline-none focus:border-current placeholder-gray-500 font-serif`}
             />
             <button 
               onClick={handleGenerate}
               disabled={isLoading || !foodInput}
-              className={`px-6 ${theme.button} ${theme.buttonText} font-bold uppercase tracking-wider rounded disabled:opacity-50`}
+              className={`px-6 ${theme.button} ${theme.buttonText} font-bold text-sm uppercase tracking-[0.15em] rounded disabled:opacity-50`}
             >
               {isLoading ? <Loader2 className="animate-spin" /> : 'Pair It'}
             </button>
@@ -67,13 +68,13 @@ export const ChefJungleAI: React.FC = () => {
 
           {suggestion && (
             <div className={`p-8 border ${theme.border} rounded-xl relative overflow-hidden animate-fade-in`}>
-               <div className={`absolute top-0 left-0 w-1 h-full ${mode === 'classic' ? 'bg-red-600' : mode === 'tropical' ? 'bg-tropical-teal' : 'bg-luxe-gold'}`}></div>
-               <h3 className={`text-2xl font-display font-bold uppercase mb-2 ${theme.text}`}>{suggestion.title}</h3>
-               <p className={`font-serif text-lg italic mb-6 ${theme.text} opacity-80`}>"{suggestion.description}"</p>
+               <div className={`absolute top-0 left-0 w-1 h-full ${mode === 'classic' ? 'bg-chili' : mode === 'tropical' ? 'bg-jungle' : 'bg-mango'}`}></div>
+               <h3 className={`text-3xl font-display font-bold uppercase mb-2 tracking-tight ${theme.text}`}>{suggestion.title}</h3>
+               <p className={`font-serif text-xl italic mb-6 ${theme.text} opacity-80 leading-relaxed`}>"{suggestion.description}"</p>
                
                <div className="flex flex-wrap gap-2">
                  {suggestion.ingredients.map((ing, i) => (
-                   <span key={i} className={`text-xs font-bold uppercase px-2 py-1 border ${theme.border} rounded ${theme.text} opacity-70`}>
+                   <span key={i} className={`text-[10px] font-bold uppercase px-3 py-1 border ${theme.border} rounded-full tracking-wider ${theme.text} opacity-70`}>
                      {ing}
                    </span>
                  ))}

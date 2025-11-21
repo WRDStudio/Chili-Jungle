@@ -1,3 +1,4 @@
+
 export type RitualMode = 'luxe' | 'classic' | 'tropical';
 
 export interface Product {
@@ -9,6 +10,7 @@ export interface Product {
   imageUrl: string;
   tags: string[];
   mode: RitualMode | 'all';
+  ingredients: string; // Added for label accuracy
 }
 
 export interface Testimonial {

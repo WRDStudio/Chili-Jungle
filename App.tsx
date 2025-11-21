@@ -1,7 +1,9 @@
+
 import React from 'react';
 import { RitualProvider } from './contexts/RitualContext';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
+import { Marquee } from './components/Marquee';
 import { RitualCards } from './components/RitualCards';
 import { ProductShowcase } from './components/ProductShowcase';
 import { UseCases } from './components/UseCases';
@@ -35,11 +37,19 @@ const FinalCTA = () => {
 const App: React.FC = () => {
   return (
     <RitualProvider>
-      <div className="min-h-screen font-sans transition-colors duration-500">
+      <div className="min-h-screen font-sans transition-colors duration-500 relative">
+        {/* Global Noise Filter Overlay for Texture */}
+        <div 
+          className="fixed inset-0 pointer-events-none z-[60] opacity-[0.04] mix-blend-overlay"
+          style={{ filter: 'url(#noiseFilter)' }}
+        ></div>
+
         <Header />
         <main>
           <Hero />
+          <Marquee />
           <RitualCards />
+          {/* Removed redundant ProductList, focused on Showcase */}
           <ProductShowcase />
           <UseCases />
           <Origin />

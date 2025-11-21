@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Product } from '../types';
 import { Flame, ShoppingCart } from 'lucide-react';
@@ -8,7 +9,7 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
-    <div className="group relative bg-white rounded-2xl shadow-xl shadow-gray-200 overflow-hidden border border-gray-100 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+    <div className="group relative bg-white rounded-2xl shadow-xl shadow-gray-200 overflow-hidden border border-gray-100 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl flex flex-col h-full">
       {/* Image */}
       <div className="aspect-square w-full overflow-hidden bg-gray-100 relative">
         <img 
@@ -22,33 +23,36 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
              <Flame 
                key={i} 
                size={14} 
-               className={i < product.heatLevel ? "text-brand-600 fill-brand-600" : "text-gray-300"} 
+               className={i < product.heatLevel ? "text-chili fill-chili" : "text-gray-300"} 
              />
            ))}
         </div>
       </div>
 
       {/* Content */}
-      <div className="p-6">
+      <div className="p-6 flex flex-col flex-grow">
         <div className="flex flex-wrap gap-2 mb-3">
           {product.tags.map(tag => (
-            <span key={tag} className="text-xs font-bold uppercase tracking-wider text-brand-700 bg-brand-50 px-2 py-1 rounded-md">
+            <span key={tag} className="text-[10px] font-bold uppercase tracking-[0.15em] text-jungle bg-cream px-2 py-1 rounded-md border border-jungle/10">
               {tag}
             </span>
           ))}
         </div>
         
-        <h3 className="text-2xl font-serif font-bold text-gray-900 mb-2 group-hover:text-brand-600 transition-colors">
+        <h3 className="text-2xl font-display font-bold tracking-tight text-ink mb-2 group-hover:text-chili transition-colors">
           {product.name}
         </h3>
         
-        <p className="text-gray-600 mb-6 line-clamp-2 text-sm leading-relaxed">
-          {product.description}
-        </p>
+        <div className="mb-4 flex-grow">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-1">Ingredientes</p>
+            <p className="text-sm font-serif text-gray-600 leading-relaxed italic">
+              {product.ingredients}
+            </p>
+        </div>
 
-        <div className="flex items-center justify-between">
-          <span className="text-xl font-bold text-gray-900">${product.price.toFixed(2)}</span>
-          <button className="flex items-center justify-center gap-2 bg-gray-900 text-white px-4 py-2.5 rounded-lg hover:bg-brand-600 transition-colors font-medium text-sm">
+        <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
+          <span className="text-lg font-bold text-ink tracking-tight">${product.price.toFixed(2)}</span>
+          <button className="flex items-center justify-center gap-2 bg-ink text-cream px-4 py-2.5 rounded-lg hover:bg-chili transition-colors font-bold text-xs uppercase tracking-[0.15em]">
             <ShoppingCart size={16} /> Add to Cart
           </button>
         </div>
