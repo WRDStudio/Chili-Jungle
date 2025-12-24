@@ -5,7 +5,7 @@ const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const generateRecipePairing = async (foodItem: string, ritualMode: string): Promise<RecipeSuggestion | null> => {
   try {
-    const model = "gemini-2.5-flash";
+    const model = "gemini-3-flash-preview";
     
     let vibe = "";
     if (ritualMode === 'luxe') vibe = "sophisticated, fine-dining, late-night bar vibe";

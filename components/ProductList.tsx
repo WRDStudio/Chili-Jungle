@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ProductCard } from './ProductCard';
 import { Product } from '../types';
@@ -9,8 +8,8 @@ const products: Product[] = [
     name: 'Chili Jungle Tropical',
     description: 'Una mezcla salvaje de chili oil, ajo, jengibre, especias y fuego tropical. Perfecto para noodles, tacos, carnes, arroz o lo que se te ocurra.',
     price: 15.00,
-    heatLevel: 4, // Updated to 4
-    imageUrl: 'https://picsum.photos/seed/tropicalbottle/600/600',
+    heatLevel: 4, 
+    imageUrl: '/images/bottle-tropical.png',
     tags: ['Cilantro', 'Cebollín', 'Fresco'],
     mode: 'tropical',
     ingredients: 'Aceite vegetal, especias aromatizantes, ajo, chile, jengibre, cilantro, cebollín y sal.'
@@ -20,8 +19,8 @@ const products: Product[] = [
     name: 'Chili Jungle Clásico',
     description: 'La receta original. Una mezcla salvaje de chili oil, ajo, jengibre, especias y fuego tropical. Perfecto para noodles, tacos, carnes, arroz o lo que se te ocurra.',
     price: 15.00,
-    heatLevel: 4, // Updated to 4
-    imageUrl: 'https://picsum.photos/seed/classicbottle/600/600',
+    heatLevel: 4, 
+    imageUrl: '/images/bottle-classic.png', 
     tags: ['Original', 'Fuego', 'Intenso'],
     mode: 'classic',
     ingredients: 'Aceite vegetal, especias aromatizantes, ajo, chile, jengibre y sal.'
@@ -30,7 +29,7 @@ const products: Product[] = [
 
 export const ProductList: React.FC = () => {
   return (
-    <section id="shop" className="hidden py-24 bg-gray-50"> {/* Hidden as ProductShowcase is main */}
+    <section id="shop" className="hidden py-24 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-brand-600 font-bold tracking-[0.3em] uppercase text-xs mb-3">La Colección</h2>
