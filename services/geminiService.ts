@@ -32,12 +32,11 @@ export const generateRecipePairing = async (foodItem: string, ritualMode: string
         responseSchema: {
           type: Type.OBJECT,
           properties: {
-            title: { type: Type.STRING, description: "A catchy name for the dish (e.g. 'Midnight Mango Toast')" },
-            description: { type: Type.STRING, description: "2-3 sentences on how to assemble it." },
+            title: { type: Type.STRING },
+            description: { type: Type.STRING },
             ingredients: { 
               type: Type.ARRAY, 
-              items: { type: Type.STRING },
-              description: "3-4 key ingredients."
+              items: { type: Type.STRING }
             }
           },
           required: ["title", "description", "ingredients"]

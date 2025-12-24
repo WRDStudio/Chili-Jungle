@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { RitualProvider } from './contexts/RitualContext';
 import { Header } from './components/Header';
@@ -12,7 +11,6 @@ import { JungleStudio } from './components/JungleStudio';
 import { ChefJungleAI } from './components/ChefJungleAI';
 import { Footer } from './components/Footer';
 
-// CTA Section Component (internal to App.tsx for simplicity)
 const FinalCTA = () => {
   return (
     <section className="py-20 bg-black text-white text-center px-4 relative overflow-hidden">
@@ -38,7 +36,6 @@ const App: React.FC = () => {
   return (
     <RitualProvider>
       <div className="min-h-screen font-sans transition-colors duration-500 relative">
-        {/* Global Noise Filter Overlay for Texture */}
         <div 
           className="fixed inset-0 pointer-events-none z-[60] opacity-[0.04] mix-blend-overlay"
           style={{ filter: 'url(#noiseFilter)' }}
@@ -49,7 +46,6 @@ const App: React.FC = () => {
           <Hero />
           <Marquee />
           <RitualCards />
-          {/* Removed redundant ProductList, focused on Showcase */}
           <ProductShowcase />
           <UseCases />
           <Origin />

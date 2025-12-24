@@ -16,7 +16,6 @@
               mango: '#F2B43A',
               cream: '#FFF5E1',
               ink: '#0A0A0A',
-              // Semantic aliases for easier theme mapping if needed, or direct usage
             },
             fontFamily: {
               sans: ['Inter', 'sans-serif'],
@@ -26,6 +25,7 @@
             animation: {
               'fade-in': 'fadeIn 0.5s ease-in-out',
               'scroll': 'scroll 20s linear infinite',
+              'spin-slow': 'spin 8s linear infinite',
             },
             keyframes: {
               fadeIn: {
@@ -42,22 +42,20 @@
       }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:wght@300;400;700&family=Oswald:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <script type="importmap">
-{
-  "imports": {
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0"
-  }
-}
-</script>
-</head>
+    <script type="importmap">
+    {
+      "imports": {
+        "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+        "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
+        "react/": "https://aistudiocdn.com/react@^19.2.0/",
+        "react": "https://aistudiocdn.com/react@^19.2.0",
+        "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0"
+      }
+    }
+    </script>
+  </head>
   <body>
     <div id="root"></div>
-    
-    <!-- Global SVG Noise Filter Definition -->
     <svg style="display: none;">
       <filter id="noiseFilter">
         <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/>

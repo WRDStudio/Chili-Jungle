@@ -1,88 +1,51 @@
-
 import React, { useState } from 'react';
-import { Sparkles, Loader2, ChefHat } from 'lucide-react';
+import { Sparkles, Loader2 } from 'lucide-react';
 import { generateRecipePairing } from '../services/geminiService';
 import { RecipeSuggestion } from '../types';
 import { useRitual } from '../contexts/RitualContext';
 
 export const ChefJungleAI: React.FC = () => {
-  const [foodInput, setFoodInput] = useState('');
+  const [input, setInput] = useState('');
   const [suggestion, setSuggestion] = useState<RecipeSuggestion | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  
+  const [loading, setLoading] = useState(false);
   const { theme, mode } = useRitual();
 
-  const handleGenerate = async () => {
-    if (!foodInput.trim()) return;
-    
-    setIsLoading(true);
-    setError(null);
-    setSuggestion(null);
-
+  const handlePair = async () => {
+    if (!input.trim()) return;
+    setLoading(true);
     try {
-      const result = await generateRecipePairing(foodInput, mode);
-      setSuggestion(result);
-    } catch (err) {
-      setError("Chef is on a break. Try again later.");
-    } finally {
-      setIsLoading(false);
-    }
+      const res = await generateRecipePairing(input, mode);
+      setSuggestion(res);
+    } catch (e) { console.error(e); }
+    finally { setLoading(false); }
   };
 
   return (
-    <section className={`py-24 px-4 transition-colors duration-500 ${theme.bg} border-t ${theme.border}`}>
-      <div className="max-w-5xl mx-auto">
-        
-        <div className="text-center mb-12">
-           <div className={`inline-flex items-center gap-2 px-4 py-1 rounded-full border ${theme.border} mb-4`}>
-             <Sparkles size={14} className={theme.accent} />
-             <span className={`text-[10px] font-bold uppercase tracking-[0.2em] ${theme.text}`}>AI Pairing Assistant</span>
-           </div>
-           <h2 className={`text-5xl md:text-6xl font-display font-bold uppercase tracking-tighter ${theme.text}`}>
-             ¿Qué vas a comer?
-           </h2>
-           <p className={`mt-4 font-serif italic text-lg ${theme.text} opacity-70`}>
-             Dinos tu plato, y el Chef Jungle te dirá cómo elevarlo.
-           </p>
+    <section className={`py-24 px-4 ${theme.bg} border-t ${theme.border}`}>
+      <div className="max-w-3xl mx-auto text-center">
+        <h2 className="text-4xl font-display font-bold uppercase mb-8">¿Qué vas a comer?</h2>
+        <div className="flex gap-4 mb-12">
+          <input 
+            value={input} 
+            onChange={e => setInput(e.target.value)}
+            placeholder="ej. Pizza, Aguacate..." 
+            className="flex-1 bg-transparent border-b-2 border-current py-2 text-xl focus:outline-none placeholder-neutral-400"
+          />
+          <button onClick={handlePair} className={`px-8 py-2 ${theme.button} ${theme.buttonText} font-bold rounded uppercase text-xs tracking-widest`}>
+            {loading ? <Loader2 className="animate-spin" /> : 'Pair it'}
+          </button>
         </div>
-
-        <div className="max-w-2xl mx-auto">
-          <div className="flex gap-2 mb-12">
-            <input 
-              type="text"
-              value={foodInput}
-              onChange={(e) => setFoodInput(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleGenerate()}
-              placeholder="ej. Pizza fría, Aguacate, Helado de vainilla..."
-              className={`flex-1 bg-transparent border-b-2 ${theme.border} ${theme.text} py-4 text-xl focus:outline-none focus:border-current placeholder-gray-500 font-serif`}
-            />
-            <button 
-              onClick={handleGenerate}
-              disabled={isLoading || !foodInput}
-              className={`px-6 ${theme.button} ${theme.buttonText} font-bold text-sm uppercase tracking-[0.15em] rounded disabled:opacity-50`}
-            >
-              {isLoading ? <Loader2 className="animate-spin" /> : 'Pair It'}
-            </button>
-          </div>
-
-          {suggestion && (
-            <div className={`p-8 border ${theme.border} rounded-xl relative overflow-hidden animate-fade-in`}>
-               <div className={`absolute top-0 left-0 w-1 h-full ${mode === 'classic' ? 'bg-chili' : mode === 'tropical' ? 'bg-jungle' : 'bg-mango'}`}></div>
-               <h3 className={`text-3xl font-display font-bold uppercase mb-2 tracking-tight ${theme.text}`}>{suggestion.title}</h3>
-               <p className={`font-serif text-xl italic mb-6 ${theme.text} opacity-80 leading-relaxed`}>"{suggestion.description}"</p>
-               
-               <div className="flex flex-wrap gap-2">
-                 {suggestion.ingredients.map((ing, i) => (
-                   <span key={i} className={`text-[10px] font-bold uppercase px-3 py-1 border ${theme.border} rounded-full tracking-wider ${theme.text} opacity-70`}>
-                     {ing}
-                   </span>
-                 ))}
-               </div>
+        {suggestion && (
+          <div className="p-8 border-2 border-current rounded-3xl animate-fade-in text-left">
+            <h3 className="text-2xl font-display font-bold uppercase mb-2">{suggestion.title}</h3>
+            <p className="font-serif italic text-lg mb-6 opacity-80">"{suggestion.description}"</p>
+            <div className="flex flex-wrap gap-2">
+              {suggestion.ingredients.map((ing, i) => (
+                <span key={i} className="px-3 py-1 border border-current rounded-full text-[10px] font-bold uppercase">{ing}</span>
+              ))}
             </div>
-          )}
-        </div>
-
+          </div>
+        )}
       </div>
     </section>
   );

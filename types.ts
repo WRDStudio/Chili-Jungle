@@ -1,4 +1,3 @@
-
 export type RitualMode = 'luxe' | 'classic' | 'tropical';
 
 export interface Product {
@@ -6,18 +5,11 @@ export interface Product {
   name: string;
   description: string;
   price: number;
-  heatLevel: number; // 1-5
+  heatLevel: number;
   imageUrl: string;
   tags: string[];
   mode: RitualMode | 'all';
-  ingredients: string; // Added for label accuracy
-}
-
-export interface Testimonial {
-  id: string;
-  name: string;
-  text: string;
-  location: string;
+  ingredients: string;
 }
 
 export interface RecipeSuggestion {

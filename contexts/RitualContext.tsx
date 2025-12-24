@@ -22,7 +22,7 @@ export const themes: Record<RitualMode, RitualTheme> = {
   classic: {
     name: "Clásico Rojo",
     bg: "bg-cream",
-    text: "text-ink", // Dark text for body readability on Cream background
+    text: "text-ink",
     accent: "text-chili",
     border: "border-chili/20",
     button: "bg-chili hover:bg-flame",
@@ -51,8 +51,6 @@ export const RitualProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
 export const useRitual = () => {
   const context = useContext(RitualContext);
-  if (!context) {
-    throw new Error('useRitual must be used within a RitualProvider');
-  }
+  if (!context) throw new Error('useRitual must be used within a RitualProvider');
   return context;
 };
