@@ -1,136 +1,93 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import { GoogleGenAI, Type } from '@google/genai';
 
-// Google Gemini API handler using @google/genai (NextGen SDK) v1.30.0
+// Chili Jungle Chef — Zero-Dependency Production API
+// Uses direct REST call to Gemini to avoid SDK overhead and versioning issues
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const lang = req.body?.lang || 'es';
+  // 1. Strict API Key Check
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    console.error("CHILI CHEF ERROR: GEMINI_API_KEY is missing from process.env");
+    return res.status(500).json({ error: "Server configuration error: Missing API Key" });
+  }
 
-  // Only allow POST requests
+  // 2. Input Validation
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  const { foodItem, ritualMode, lang = 'es' } = req.body;
+  if (!foodItem) {
+    return res.status(400).json({ error: "Missing foodItem in request body" });
+  }
+
+  // 3. Model Configuration
+  const model = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+  console.log("[ChefAPI] Using model:", model);
+
   try {
-    const { foodItem, ritualMode } = req.body;
-    
-    // Environment check inside handler
-    const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
-    
-    if (!apiKey) {
-      console.error('[ChefAPI] CRITICAL: GEMINI_API_KEY is missing.');
-      return res.status(500).json({ error: 'API key not configured in Vercel.' });
-    }
+    // 4. Prompt Construction
+    const systemInstruction = `You are the Chili Jungle Chef. 
+    Chili Jungle products: 'clasico' (balanced heat), 'tropical' (fruity heat).
+    Luxe mode is a mood, NOT a product. Always recommend 'clasico' or 'tropical'.
+    Reject non-food inputs with {"error": "NOT_FOOD"}.
+    Language: ${lang === 'es' ? 'Spanish' : 'English'}.`;
 
-    // Initialize inside handler to catch setup errors
-    let genAI;
-    try {
-      genAI = new GoogleGenAI({ apiKey });
-    } catch (e: any) {
-      console.error('[ChefAPI] Initialization Error:', e);
-      return res.status(500).json({ error: 'Failed to initialize AI client: ' + e.message });
-    }
-
-    // Basic validation
-    if (!foodItem || typeof foodItem !== 'string') {
-      return res.status(400).json({ 
-        error: lang === 'es' ? 'Debes ingresar un alimento / ingrediente real.' : 'Please provide a real food ingredient or dish name.' 
-      });
-    }
-
-    const validRitualModes = ['luxe', 'classic', 'tropical'];
-    if (!ritualMode || !validRitualModes.includes(ritualMode)) {
-      return res.status(400).json({ error: 'Invalid ritual mode.' });
-    }
-
-    // System prompt and context
-    const systemInstruction = `You are the Chili Jungle Chef, an expert in pairing real food with Chili Jungle hot sauces.
-    Chili Jungle has two physical products:
-    1. Chili Jungle Clásico: Traditional, versatile, balanced heat.
-    2. Chili Jungle Tropical: Exotic, fruity, vibrant heat.
-    
-    Users also choose a 'Ritual Mode' (Mood):
-    - Luxe: Sophisticated, elevated, premium experience.
-    - Clásico: Authentic, traditional, everyday greatness.
-    - Tropical: Fun, exotic, adventurous vibe.
-    
-    CRITICAL: Luxe is NOT a product. If a user chooses Luxe mode, you MUST still recommend either 'clasico' or 'tropical' as the actual physical product based on the food provided.
-    
-    VALIDATION:
-    - If the input is not a real food ingredient or dish (e.g., vulgar, absurd, non-food, or joke), return a valid JSON object with "error": "NOT_FOOD".
-    - Otherwise, provide a creative recipe or serving suggestion that includes the food item and ONE of the Chili Jungle products.
-    - Language: ${lang === 'es' ? 'Spanish' : 'English'}.`;
-
-    const promptText = `User food input: "${foodItem}"
-    User ritual mode: "${ritualMode}"
-    
-    Provide a pairing suggestion in JSON format with exactly these fields:
-    {
-      "title": "Creative name for the pairing",
-      "description": "Short description of the experience",
-      "ingredients": ["Ingredient 1", "Ingredient 2", ...],
-      "steps": ["Step 1...", "Step 2..."],
-      "recommendedProduct": "clasico" or "tropical"
+    const promptText = `User food: "${foodItem}". Ritual: "${ritualMode}".
+    Return JSON: {
+      "title": "string",
+      "description": "string",
+      "ingredients": ["string"],
+      "steps": ["string"],
+      "recommendedProduct": "clasico" | "tropical"
     }`;
 
-    console.log('[ChefAPI] Generating content for:', foodItem);
-
-    // Use models.generateContent with standard naming
-    const result = await genAI.models.generateContent({
-      model: 'models/gemini-1.5-flash',
-      contents: [{ role: 'user', parts: [{ text: promptText }] }],
-      config: {
-        systemInstruction: systemInstruction,
-        responseMimeType: 'application/json',
-        responseSchema: {
-          type: Type.OBJECT,
-          properties: {
-            title: { type: Type.STRING },
-            description: { type: Type.STRING },
-            ingredients: {
-              type: Type.ARRAY,
-              items: { type: Type.STRING }
-            },
-            steps: { 
-              type: Type.ARRAY,
-              items: { type: Type.STRING }
-            },
-            recommendedProduct: { 
-              type: Type.STRING,
-              enum: ['clasico', 'tropical']
-            },
-            error: { type: Type.STRING }
-          },
-          required: ['title', 'description', 'ingredients', 'steps', 'recommendedProduct']
+    // 5. Direct REST Call
+    const endpoint = `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${apiKey}`;
+    
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system_instruction: {
+          parts: [{ text: systemInstruction }]
+        },
+        contents: [
+          {
+            role: 'user',
+            parts: [{ text: promptText }]
+          }
+        ],
+        generationConfig: {
+          response_mime_type: "application/json"
         }
-      }
+      })
     });
 
-    if (result && result.text) {
-      const data = JSON.parse(result.text);
-      if (data.error === 'NOT_FOOD') {
-        return res.status(400).json({ 
-          error: lang === 'es' ? 'El Chef solo acepta alimentos reales.' : 'The Chef only works with real food!' 
-        });
-      }
-      return res.status(200).json(data);
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(`Gemini API error (${response.status}): ${JSON.stringify(errorData)}`);
+    }
+
+    const data = await response.json();
+    
+    // 6. Safe Response Parsing
+    // Path: data.candidates[0].content.parts[0].text
+    if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
+      const resultText = data.candidates[0].content.parts[0].text;
+      
+      // 7. Return clean JSON envelope
+      // Note: We return { result: resultText } as requested, but the resultText IS the JSON string.
+      return res.status(200).json({ result: resultText });
     } else {
-      console.error('[ChefAPI] Empty result from AI');
-      return res.status(500).json({ error: 'El Chef no pudo generar una respuesta. Intenta de nuevo.' });
+      throw new Error("Invalid response structure from Gemini API");
     }
 
   } catch (error: any) {
-    console.error('[ChefAPI] Execution Error:', error);
-    const msg = error.message || '';
-    
-    // Check for specific API errors
-    if (msg.includes('403') || msg.includes('API_KEY')) {
-      return res.status(500).json({ error: 'Configuración de API inválida. Revisa Vercel.' });
-    }
-    
+    console.error("CHILI CHEF ERROR:", error);
     return res.status(500).json({ 
-      error: lang === 'es' ? 'Error interno del Chef. Intenta de nuevo.' : 'Internal Chef error. Please try again.',
-      debug: process.env.NODE_ENV === 'development' ? msg : undefined
+      error: "El Chef está ocupado. Intenta de nuevo más tarde.",
+      message: error.message 
     });
   }
 }

@@ -16,6 +16,18 @@ export const generateRecipePairing = async (foodItem: string, ritualMode: string
     }
 
     const data = await response.json();
+    
+    // The backend now returns { result: string } where result is the AI JSON
+    if (data.result) {
+      try {
+        const parsed = JSON.parse(data.result);
+        return parsed as RecipeSuggestion;
+      } catch (e) {
+        console.error("Failed to parse AI response inner JSON:", e);
+        throw new Error("Invalid response format from AI");
+      }
+    }
+
     return data as RecipeSuggestion;
 
   } catch (error) {
