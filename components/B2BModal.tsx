@@ -7,13 +7,6 @@ interface B2BModalProps {
   onClose: () => void;
 }
 
-// ─────────────────────────────────────────────
-// ⚙️  EmailJS Configuration — fill in your keys
-// ─────────────────────────────────────────────
-const EMAILJS_PUBLIC_KEY    = 'YOUR_EMAILJS_PUBLIC_KEY';
-const EMAILJS_SERVICE_ID    = 'YOUR_EMAILJS_SERVICE_ID';
-const EMAILJS_TEMPLATE_ID   = 'YOUR_EMAILJS_TEMPLATE_ID';
-
 const businessTypes = [
   { value: '', label: 'Tipo de negocio / Business Type' },
   { value: 'retail',       label: 'Retail / Tienda' },
@@ -48,26 +41,23 @@ export const B2BModal: React.FC<B2BModalProps> = ({ isOpen, onClose }) => {
     e.preventDefault();
     setFormState('loading');
 
-    // ── EmailJS integration ──────────────────────────────
-    // Uncomment and install emailjs-com: npm install emailjs-com
-    // import emailjs from 'emailjs-com';
-    // try {
-    //   await emailjs.send(
-    //     EMAILJS_SERVICE_ID,
-    //     EMAILJS_TEMPLATE_ID,
-    //     { from_name: form.name, from_email: form.email, country: form.country,
-    //       business_type: form.businessType, message: form.message },
-    //     EMAILJS_PUBLIC_KEY
-    //   );
-    //   setFormState('success');
-    // } catch {
-    //   setFormState('error');
-    // }
-    // ────────────────────────────────────────────────────
+    try {
+      const res = await fetch('/api/contact-b2b', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, lang: 'es' }),
+      });
 
-    // Simulate for now (remove once EmailJS is wired)
-    await new Promise((res) => setTimeout(res, 1800));
-    setFormState('success');
+      if (!res.ok) {
+        const { error } = await res.json();
+        throw new Error(error || 'Unknown error');
+      }
+
+      setFormState('success');
+    } catch (err) {
+      console.error('[B2BModal] Submit error:', err);
+      setFormState('error');
+    }
   };
 
   const handleClose = () => {
