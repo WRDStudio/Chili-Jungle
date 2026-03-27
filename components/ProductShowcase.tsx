@@ -1,58 +1,108 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useRitual } from '../contexts/RitualContext';
-import { Flame, QrCode, ImageOff, RefreshCw, Eye, EyeOff } from 'lucide-react';
+import { Flame } from 'lucide-react';
+import { STRIPE_LINK_CLASSIC, STRIPE_LINK_TROPICAL } from '../App';
 
 export const ProductShowcase: React.FC = () => {
-  const { mode } = useRitual();
-  const [pathAttempts, setPathAttempts] = useState<Record<string, number>>({ tropical: 0, tropicalView: 0, classic: 0, classicView: 0 });
-  const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
-  const [views, setViews] = useState<Record<string, 'front' | 'view'>>({ tropical: 'front', classic: 'front' });
+  const { theme } = useRitual();
 
-  const getPaths = (file: string) => [`/images/${file}`, `images/${file}`, `/public/images/${file}`];
-
-  const handleImgError = (key: string, file: string) => {
-    const attempts = pathAttempts[key] || 0;
-    const paths = getPaths(file);
-    if (attempts < paths.length - 1) setPathAttempts(prev => ({ ...prev, [key]: attempts + 1 }));
-    else setImgErrors(prev => ({ ...prev, [key]: true }));
-  };
-
-  const getPath = (key: string, file: string) => getPaths(file)[pathAttempts[key] || 0];
+  const products = [
+    {
+      id: 'classic',
+      name: 'Clásico',
+      hook: 'Prueba el fuego.',
+      img: '/images/bottle-classic.png',
+      desc: 'Una mezcla salvaje de chili oil, ajo, jengibre y fuego.',
+      ingredients: 'Aceite vegetal, especias, ajo, chile, jengibre y sal.',
+      heat: 4,
+      bg: 'bg-gradient-to-br from-[#E5812A] to-[#C7432A]',
+      text: 'text-cream',
+      stripeLink: STRIPE_LINK_CLASSIC,
+    },
+    {
+      id: 'tropical',
+      name: 'Tropical',
+      hook: 'Lleva el sabor a otro nivel.',
+      img: '/images/bottle-tropical.png',
+      desc: 'Una mezcla salvaje de chili oil, ajo, jengibre, cilantro, cebollín y fuego tropical.',
+      ingredients: 'Aceite vegetal, especias, ajo, chile, jengibre, cilantro, cebollín y sal.',
+      heat: 3,
+      bg: 'bg-[#FDF6E3] border border-[#1F4E33]/10',
+      text: 'text-[#1F4E33]',
+      stripeLink: STRIPE_LINK_TROPICAL,
+    }
+  ];
 
   return (
-    <section id="products" className={`py-24 ${mode === 'luxe' ? 'bg-black' : 'bg-white'}`}>
+    <section id="products" className={`py-24 ${theme.bg} transition-colors duration-700 scroll-mt-20 md:scroll-mt-28 lg:scroll-mt-36`}>
       <div className="max-w-7xl mx-auto px-4">
-        <h2 className={`text-5xl font-display font-bold uppercase text-center mb-16 ${mode === 'luxe' ? 'text-cream' : 'text-ink'}`}>Nuestras Salsas</h2>
-        <div className="grid gap-12">
-          {['tropical', 'classic'].map((prod) => (
-            <div key={prod} className="relative bg-neutral-100 rounded-3xl overflow-hidden grid lg:grid-cols-2">
-               <div className="p-12 flex flex-col justify-center">
-                  <h3 className="text-4xl font-display font-bold uppercase mb-4">{prod === 'tropical' ? 'Tropical Mix' : 'Classic Rojo'}</h3>
-                  <p className="font-serif italic text-lg opacity-70 mb-8">La esencia pura de la jungla en un frasco.</p>
-                  <div className="flex gap-2 mb-8">
-                    {[1, 2, 3, 4].map(i => <Flame key={i} size={20} className="text-chili fill-chili" />)}
-                  </div>
-                  <div className="mt-auto flex items-center gap-4">
-                     <QrCode size={40} className="opacity-30" />
-                     <span className="text-[10px] font-bold uppercase tracking-widest opacity-50">Scan for recipes</span>
-                  </div>
-               </div>
-               <div className="bg-neutral-200/50 p-12 flex flex-col items-center justify-center min-h-[400px] relative">
-                  {imgErrors[prod] ? <div className="text-red-500 text-xs font-mono">Image Not Found</div> : (
-                    <img 
-                      src={getPath(prod, `bottle-${prod}${views[prod] === 'view' ? '-view' : ''}.png`)} 
-                      className="h-80 object-contain drop-shadow-xl" 
-                      onError={() => handleImgError(prod, `bottle-${prod}${views[prod] === 'view' ? '-view' : ''}.png`)} 
-                    />
-                  )}
-                  <button 
-                    onClick={() => setViews(v => ({ ...v, [prod]: v[prod] === 'front' ? 'view' : 'front' }))}
-                    className="absolute bottom-6 flex items-center gap-2 px-4 py-2 bg-white/80 rounded-full text-[10px] font-bold uppercase tracking-widest border border-black/10"
-                  >
-                    {views[prod] === 'front' ? <Eye size={14} /> : <EyeOff size={14} />}
-                    {views[prod] === 'front' ? 'Ver Etiqueta' : 'Ver Botella'}
-                  </button>
-               </div>
+        <h2 className={`text-4xl md:text-5xl font-display uppercase text-center mb-16 tracking-tighter ${theme.text}`}>Nuestras Salsas</h2>
+        
+        <div className="grid lg:grid-cols-2 gap-8 md:gap-12">
+          {products.map((prod) => (
+            <div 
+              key={prod.id} 
+              className={`rounded-3xl overflow-hidden shadow-2xl ${prod.bg} p-8 md:p-12 transition-transform hover:scale-[1.02] flex flex-col`}
+            >
+              {/* Header: Name & Heat */}
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-start mb-6 gap-4">
+                 <div>
+                   <h3 className={`text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-tighter ${prod.text}`}>
+                     {prod.name}
+                   </h3>
+                   <p className={`font-serif font-bold italic tracking-wide mt-3 text-lg sm:text-xl opacity-90 ${prod.text}`}>
+                     {prod.hook}
+                   </p>
+                 </div>
+                 <div className="flex gap-1 mt-2 sm:mt-0" title={`Nivel de Picante: ${prod.heat}/5`}>
+                   {[1, 2, 3, 4, 5].map(i => (
+                     <Flame 
+                       key={i} 
+                       size={24} 
+                       className={`${prod.text} ${i <= prod.heat ? 'fill-current' : 'opacity-30'} drop-shadow-sm w-5 h-5 sm:w-6 sm:h-6`} 
+                       strokeWidth={2.5} 
+                     />
+                   ))}
+                 </div>
+              </div>
+              
+              <div className="grid sm:grid-cols-2 gap-8 flex-grow">
+                 {/* Product Image */}
+                 <div className="relative flex justify-center items-center h-[300px] md:h-[400px] order-1 sm:order-2">
+                   <img src={prod.img} alt={prod.name} className="w-full h-full object-contain drop-shadow-2xl" />
+                 </div>
+
+                 {/* Information */}
+                 <div className="flex flex-col gap-6 justify-center order-2 sm:order-1">
+                   <p className={`font-serif italic text-lg md:text-xl opacity-90 ${prod.text}`}>
+                     "{prod.desc}"
+                   </p>
+                   
+                   <div>
+                     <span className={`block text-xs font-bold uppercase tracking-widest opacity-60 mb-2 ${prod.text}`}>
+                       Ingredientes
+                     </span>
+                     <p className={`text-sm md:text-base font-medium leading-snug ${prod.text}`}>
+                       {prod.ingredients}
+                     </p>
+                   </div>
+                   
+                   <div className="mt-auto pt-6 flex flex-col sm:flex-row sm:items-center gap-4 w-full">
+                     <a
+                       href={prod.stripeLink}
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       className={`w-full sm:w-auto text-center px-6 py-3 md:py-4 rounded-xl font-bold uppercase tracking-widest transition-transform hover:scale-105 active:scale-95 shadow-lg ${prod.id === 'classic' ? 'bg-[#C7432A] text-white hover:bg-black' : 'bg-[#1F4E33] text-white hover:bg-mango'}`}
+                     >
+                       Ordenar Ahora
+                     </a>
+                     <div className={`relative w-10 h-10 md:w-12 md:h-12 rounded-full border overflow-hidden ${prod.id === 'classic' ? 'border-cream/30' : 'border-[#1F4E33]/20'} flex-shrink-0`} title="Hecho en Costa Rica">
+                       <img src="/images/costa_rica_flag_round.svg" className="absolute inset-0 w-full h-full object-cover scale-[1.05]" alt="Hecho en Costa Rica" /> 
+                     </div>
+                   </div>
+                 </div>
+              </div>
+
             </div>
           ))}
         </div>

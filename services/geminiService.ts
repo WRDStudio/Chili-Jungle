@@ -1,12 +1,12 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { RecipeSuggestion } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
 
 export const generateRecipePairing = async (foodItem: string, ritualMode: string): Promise<RecipeSuggestion | null> => {
   try {
     const model = "gemini-3-flash-preview";
-    
+
     let vibe = "";
     if (ritualMode === 'luxe') vibe = "sophisticated, fine-dining, late-night bar vibe";
     else if (ritualMode === 'tropical') vibe = "fresh, beachy, tamarindo surf vibe, heavy on citrus and freshness";
@@ -34,8 +34,8 @@ export const generateRecipePairing = async (foodItem: string, ritualMode: string
           properties: {
             title: { type: Type.STRING },
             description: { type: Type.STRING },
-            ingredients: { 
-              type: Type.ARRAY, 
+            ingredients: {
+              type: Type.ARRAY,
               items: { type: Type.STRING }
             }
           },
@@ -44,9 +44,13 @@ export const generateRecipePairing = async (foodItem: string, ritualMode: string
       }
     });
 
+    console.log("Full AI Response:", JSON.stringify(response, null, 2));
+
     if (response.text) {
+      console.log("AI Text found:", response.text);
       return JSON.parse(response.text) as RecipeSuggestion;
     }
+    console.warn("No text in AI response");
     return null;
 
   } catch (error) {
