@@ -21,48 +21,48 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: "Missing foodItem in request body" });
   }
 
-  // 3. Model Configuration — use -latest suffix for v1beta compatibility
-  const model = process.env.GEMINI_MODEL || "gemini-1.5-flash-latest";
+  // 3. Model Configuration — gemini-1.5-flash is the stable standard for v1
+  const model = process.env.GEMINI_MODEL || "gemini-1.5-flash";
   console.log("[ChefAPI] Using model:", model);
 
   try {
-    // 4. Prompt Construction with Culinary Intelligence
-    const systemInstruction = `You are "The Chili Jungle Chef" (AI).
-    Your personality: Bold, culinary-obsessed, slightly mysterious, and witty.
+    // 4. Prompt Construction - Using stable v1 format
+    // Since v1 doesn't support separate system_instruction, we prepend it.
+    const combinedPrompt = `Persona: You are "The Chili Jungle Chef". Bold, culinary-obsessed, witty.
     
     PRODUCT CONTEXT:
     1. 'clasico': Balanced Heat. Red Habanero. Pairs with pizza, pasta, meats.
     2. 'tropical': Sweet & Spicy. Yellow Habanero + Pineapple. Pairs with tacos, fish, breakfast.
-    3. 'luxe': A mode/mood. NOT a product. Always recommend 'clasico' or 'tropical'.
+    3. 'luxe': A mood. Recommend 'clasico' or 'tropical'.
     
     RULES:
-    - If user enters vulgar, offensive, or silly nonsense: Return a silly/mysterious response in the JSON but stay in character.
-    - If user enters liquids (Soda, Water, Juice, Soup): Remind them that oil doesn't mix with liquids! Suggest a SOLID food that goes well with that liquid and add the Chili Jungle ritual to THAT food.
-    - Always return valid JSON matching the requested schema.
-    - Language: ${lang === 'es' ? 'Spanish' : 'English'}.`;
+    - If input is vulgar/silly: Return a silly joke but stay in character.
+    - If input is liquid (Soda, Water, etc.): Remind them oil doesn't mix with liquids! Suggest a SOLID food pairing instead.
+    - Output must be strict JSON matching this schema:
+      {
+        "title": "Pairing Title",
+        "description": "Short witty description",
+        "ingredients": ["Item 1", "Item 2"],
+        "steps": ["Step 1", "Step 2"],
+        "recommendedProduct": "clasico" | "tropical"
+      }
+    - Language: ${lang === 'es' ? 'Spanish' : 'English'}.
+    
+    User input: "${foodItem}". Ritual Mode: "${ritualMode}".`;
 
-    const promptText = `User food/input: "${foodItem}". Ritual Mode: "${ritualMode}".
-    Generate a pairing suggestion with title, description, ingredients list, and steps.
-    Ensure "recommendedProduct" is strictly either "clasico" or "tropical".`;
-
-    // 5. Direct REST Call — Using v1beta for system_instruction and JSON mode support
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+    // 5. Direct REST Call — Using stable v1
+    const endpoint = `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${apiKey}`;
     
     const response = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        system_instruction: {
-          parts: [{ text: systemInstruction }]
-        },
-        contents: [
-          {
-            role: 'user',
-            parts: [{ text: promptText }]
-          }
-        ],
+        contents: [{
+          parts: [{ text: combinedPrompt }]
+        }],
         generationConfig: {
-          response_mime_type: "application/json"
+          temperature: 0.7,
+          maxOutputTokens: 800
         }
       })
     });
