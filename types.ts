@@ -17,6 +17,7 @@ export interface RecipeSuggestion {
   description: string;
   ingredients: string[];
   steps: string[];
+  recommendedProduct: 'clasico' | 'tropical';
 }
 
 export interface RitualTheme {

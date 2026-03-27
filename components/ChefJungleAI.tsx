@@ -42,7 +42,14 @@ export const ChefJungleAI: React.FC = () => {
         </div>
         {suggestion && (
           <div className={`p-8 border-2 border-current rounded-3xl animate-fade-in text-left ${theme.text}`}>
-            <h3 className="text-2xl font-display font-bold uppercase mb-2">{suggestion.title}</h3>
+            <div className="flex justify-between items-start mb-4">
+              <h3 className="text-2xl font-display font-bold uppercase">{suggestion.title}</h3>
+              <span className={`px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
+                suggestion.recommendedProduct === 'tropical' ? 'bg-[#CDFF00] text-black' : 'bg-[#E31D24] text-white'
+              }`}>
+                USAR CON: {suggestion.recommendedProduct}
+              </span>
+            </div>
             <p className="font-serif italic text-lg mb-6 opacity-80">"{suggestion.description}"</p>
             <div className="flex flex-wrap gap-2 mb-6">
               {suggestion.ingredients.map((ing, i) => (
