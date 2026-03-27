@@ -42,8 +42,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       "recommendedProduct": "clasico" | "tropical"
     }`;
 
-    // 5. Direct REST Call
-    const endpoint = `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${apiKey}`;
+    // 5. Direct REST Call — Using v1beta for system_instruction and JSON mode support
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
     
     const response = await fetch(endpoint, {
       method: 'POST',
