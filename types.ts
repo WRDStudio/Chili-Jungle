@@ -16,6 +16,7 @@ export interface RecipeSuggestion {
   title: string;
   description: string;
   ingredients: string[];
+  steps: string[];
 }
 
 export interface RitualTheme {

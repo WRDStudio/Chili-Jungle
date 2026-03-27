@@ -1,57 +1,22 @@
-import { GoogleGenAI, Type } from "@google/genai";
 import { RecipeSuggestion } from "../types";
-
-const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
 
 export const generateRecipePairing = async (foodItem: string, ritualMode: string): Promise<RecipeSuggestion | null> => {
   try {
-    const model = "gemini-3-flash-preview";
-
-    let vibe = "";
-    if (ritualMode === 'luxe') vibe = "sophisticated, fine-dining, late-night bar vibe";
-    else if (ritualMode === 'tropical') vibe = "fresh, beachy, tamarindo surf vibe, heavy on citrus and freshness";
-    else vibe = "classic spicy, energetic, street food and pizza vibe";
-
-    const prompt = `
-      I have a premium chili oil brand called "Chili Jungle Studio" based in Tamarindo, Costa Rica.
-      We have a "Ritual" concept: Luxe (Elegant), Classic (Spicy/Street), Tropical (Fresh).
-      Current Ritual Mode: ${ritualMode}.
-      
-      The user wants to pair "Chili Jungle" oil with: "${foodItem}".
-      Suggest a creative mini-recipe or serving suggestion.
-      
-      Tone: ${vibe}. Keep it cool, like a DJ recommending a track, but for food.
-    `;
-
-    const response = await ai.models.generateContent({
-      model: model,
-      contents: prompt,
-      config: {
-        systemInstruction: "You are the head chef of 'Chili Jungle Studio'. You speak with passion, blending culinary expertise with a laid-back Costa Rican surfer/musician vibe.",
-        responseMimeType: "application/json",
-        responseSchema: {
-          type: Type.OBJECT,
-          properties: {
-            title: { type: Type.STRING },
-            description: { type: Type.STRING },
-            ingredients: {
-              type: Type.ARRAY,
-              items: { type: Type.STRING }
-            }
-          },
-          required: ["title", "description", "ingredients"]
-        }
-      }
+    const response = await fetch('/api/chili-chef', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ foodItem, ritualMode }),
     });
 
-    console.log("Full AI Response:", JSON.stringify(response, null, 2));
-
-    if (response.text) {
-      console.log("AI Text found:", response.text);
-      return JSON.parse(response.text) as RecipeSuggestion;
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to fetch recipe from chef');
     }
-    console.warn("No text in AI response");
-    return null;
+
+    const data = await response.json();
+    return data as RecipeSuggestion;
 
   } catch (error) {
     console.error("Error generating recipe:", error);
