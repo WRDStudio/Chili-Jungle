@@ -61,7 +61,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }],
         generationConfig: {
           temperature: 0.7,
-          maxOutputTokens: 800
+          maxOutputTokens: 800,
+          response_mime_type: "application/json"
         }
       })
     });
