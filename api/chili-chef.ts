@@ -21,13 +21,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: "Missing foodItem in request body" });
   }
 
-  // 3. Model Configuration — gemini-1.5-flash is the stable standard for v1
-  const model = process.env.GEMINI_MODEL || "gemini-1.5-flash";
+  // 3. Model Configuration
+  const model = process.env.GEMINI_MODEL || "gemini-2.5-flash";
   console.log("[ChefAPI] Using model:", model);
 
   try {
-    // 4. Prompt Construction - Using stable v1 format
-    // Since v1 doesn't support separate system_instruction, we prepend it.
+    // 4. Prompt Construction - Using stable v1 format (or v1beta depending on model)
     const combinedPrompt = `Persona: You are "The Chili Jungle Chef". Bold, culinary-obsessed, witty.
     
     PRODUCT CONTEXT:
@@ -50,8 +49,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     
     User input: "${foodItem}". Ritual Mode: "${ritualMode}".`;
 
-    // 5. Direct REST Call — Using stable v1
-    const endpoint = `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${apiKey}`;
+    // 5. Direct REST Call — Switching to v1beta for better model support
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
     
     const response = await fetch(endpoint, {
       method: 'POST',
@@ -74,13 +73,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const data = await response.json();
     
-    // 6. Safe Response Parsing
-    // Path: data.candidates[0].content.parts[0].text
     if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
       const resultText = data.candidates[0].content.parts[0].text;
-      
-      // 7. Return clean JSON envelope
-      // Note: We return { result: resultText } as requested, but the resultText IS the JSON string.
       return res.status(200).json({ result: resultText });
     } else {
       throw new Error("Invalid response structure from Gemini API");
@@ -89,8 +83,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   } catch (error: any) {
     console.error("CHILI CHEF ERROR:", error);
     return res.status(500).json({ 
-      error: "El Chef está ocupado. Intenta de nuevo más tarde.",
-      message: error.message 
+      error: error?.message || 'Chef failed'
     });
   }
 }
