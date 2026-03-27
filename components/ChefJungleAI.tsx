@@ -52,7 +52,7 @@ export const ChefJungleAI: React.FC = () => {
             </div>
             <p className="font-serif italic text-lg mb-6 opacity-80">"{suggestion.description}"</p>
             <div className="flex flex-wrap gap-2 mb-6">
-              {suggestion.ingredients.map((ing, i) => (
+              {suggestion.ingredients?.map((ing, i) => (
                 <span key={i} className="px-3 py-1 border border-current rounded-full text-[10px] font-bold uppercase">{ing}</span>
               ))}
             </div>
@@ -60,7 +60,7 @@ export const ChefJungleAI: React.FC = () => {
               <div className="space-y-3">
                 <h4 className="text-xs font-bold uppercase tracking-widest opacity-60">Instrucciones / Steps</h4>
                 <ol className="list-decimal list-inside space-y-2 text-sm md:text-base opacity-90">
-                  {suggestion.steps.map((step, i) => (
+                  {suggestion.steps?.map((step, i) => (
                     <li key={i} className="pl-2">{step}</li>
                   ))}
                 </ol>
