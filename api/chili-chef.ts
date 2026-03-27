@@ -21,8 +21,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: "Missing foodItem in request body" });
   }
 
-  // 3. Model Configuration — gemini-1.5-flash is recommended for higher Free Tier quota
-  const model = process.env.GEMINI_MODEL || "gemini-1.5-flash";
+  // 3. Model Configuration — use -latest suffix for v1beta compatibility
+  const model = process.env.GEMINI_MODEL || "gemini-1.5-flash-latest";
   console.log("[ChefAPI] Using model:", model);
 
   try {
