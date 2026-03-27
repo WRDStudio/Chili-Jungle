@@ -17,21 +17,12 @@ export const generateRecipePairing = async (foodItem: string, ritualMode: string
 
     const data = await response.json();
     
-    // The backend now returns { result: string } where result is the AI JSON
-    if (data.result) {
-      // Clean the response: some models wrap JSON in markdown blocks (```json ... ```)
-      const cleanedText = data.result.replace(/```json\n?|```/g, '').trim();
-      
-      try {
-        return JSON.parse(cleanedText) as RecipeSuggestion;
-      } catch (parseError) {
-        console.error("Failed to parse AI response inner JSON:", parseError, cleanedText);
-        throw new Error("Invalid response format from AI");
-      }
+    // The backend now returns the flat JSON object directly (Requirement 8)
+    if (data && typeof data === 'object' && 'title' in data) {
+      return data as RecipeSuggestion;
     }
-
-    return data as RecipeSuggestion;
-
+    
+    throw new Error("Invalid response format from Chef API");
   } catch (error) {
     console.error("Error generating recipe:", error);
     throw error;
