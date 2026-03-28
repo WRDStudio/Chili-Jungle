@@ -118,7 +118,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           { role: 'user', content: userPrompt }
         ],
         temperature: 0.7,
-        max_tokens: 350,
+        max_completion_tokens: 350,
         response_format: { type: "json_object" }
       })
     });
