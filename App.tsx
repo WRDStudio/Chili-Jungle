@@ -11,15 +11,14 @@ import { Origin } from './components/Origin';
 import { JungleStudio } from './components/JungleStudio';
 import { Footer } from './components/Footer';
 import { B2BModal } from './components/B2BModal';
+import { DirectOrderModal } from './components/DirectOrderModal';
 
-// ──────────────────────────────────────────────────────────
-// ⚙️  Stripe — Replace with your actual Stripe Payment Links
-// ──────────────────────────────────────────────────────────
-export const STRIPE_LINK_CLASSIC  = 'https://buy.stripe.com/YOUR_CLASSIC_LINK';
-export const STRIPE_LINK_LUXE     = 'https://buy.stripe.com/YOUR_LUXE_LINK';
-export const STRIPE_LINK_TROPICAL = 'https://buy.stripe.com/YOUR_TROPICAL_LINK';
+interface FinalCTAProps {
+  onOpenB2B: () => void;
+  onOpenOrder: () => void;
+}
 
-const FinalCTA = ({ onOpenB2B }: { onOpenB2B: () => void }) => {
+const FinalCTA = ({ onOpenB2B, onOpenOrder }: FinalCTAProps) => {
   return (
     <section className="py-20 bg-black text-white text-center px-4 relative overflow-hidden">
       <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
@@ -28,10 +27,10 @@ const FinalCTA = ({ onOpenB2B }: { onOpenB2B: () => void }) => {
           Lleva la Jungla<br />A Tu Mesa
         </h2>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <a href={STRIPE_LINK_CLASSIC} target="_blank" rel="noopener noreferrer" className="px-8 py-4 bg-flame text-white font-bold uppercase tracking-widest hover:bg-chili transition-colors rounded-full">
+          <button onClick={onOpenOrder} className="px-8 py-4 bg-flame text-white font-bold uppercase tracking-widest hover:bg-chili transition-colors rounded-full shadow-lg">
             Ordenar Ahora
-          </a>
-          <button onClick={onOpenB2B} className="px-8 py-4 border border-cream text-cream font-bold uppercase tracking-widest hover:bg-cream hover:text-jungle transition-colors rounded-full">
+          </button>
+          <button onClick={onOpenB2B} className="px-8 py-4 border border-cream text-cream font-bold uppercase tracking-widest hover:bg-cream hover:text-jungle transition-colors rounded-full shadow-md">
             Vender (B2B)
           </button>
         </div>
@@ -43,6 +42,11 @@ const FinalCTA = ({ onOpenB2B }: { onOpenB2B: () => void }) => {
 const App: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [b2bOpen, setB2bOpen] = useState(false);
+  
+  // Direct Order Modal State
+  const [orderOpen, setOrderOpen] = useState(false);
+  const [orderProduct, setOrderProduct] = useState<'classic' | 'tropical' | null>(null);
+  const [orderSource, setOrderSource] = useState<string>('direct');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,6 +55,12 @@ const App: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleOpenOrder = (product?: 'classic' | 'tropical', source?: string) => {
+    setOrderProduct(product || null);
+    setOrderSource(source || 'direct');
+    setOrderOpen(true);
+  };
 
   return (
     <RitualProvider>
@@ -64,16 +74,24 @@ const App: React.FC = () => {
         <main>
           <Hero />
           <Marquee />
-          <ProductShowcase />
+          <ProductShowcase onOpenOrder={handleOpenOrder} />
           <ChefJungleAI />
           <RaizDelFuego />
-          <Recipes />
+          <Recipes onOpenOrder={handleOpenOrder} />
           <Origin />
           <JungleStudio />
-          <FinalCTA onOpenB2B={() => setB2bOpen(true)} />
+          <FinalCTA onOpenB2B={() => setB2bOpen(true)} onOpenOrder={() => handleOpenOrder(undefined, 'final_cta')} />
         </main>
         <Footer onOpenB2B={() => setB2bOpen(true)} />
+        
+        {/* Modals */}
         <B2BModal isOpen={b2bOpen} onClose={() => setB2bOpen(false)} />
+        <DirectOrderModal 
+          isOpen={orderOpen} 
+          onClose={() => setOrderOpen(false)} 
+          initialProduct={orderProduct} 
+          source={orderSource}
+        />
       </div>
     </RitualProvider>
   );

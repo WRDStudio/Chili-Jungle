@@ -1,9 +1,12 @@
 import React from 'react';
 import { useRitual } from '../contexts/RitualContext';
 import { Flame } from 'lucide-react';
-import { STRIPE_LINK_CLASSIC, STRIPE_LINK_TROPICAL } from '../App';
 
-export const ProductShowcase: React.FC = () => {
+interface ProductShowcaseProps {
+  onOpenOrder: (product: 'classic' | 'tropical', source?: string) => void;
+}
+
+export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenOrder }) => {
   const { theme } = useRitual();
 
   const products = [
@@ -17,7 +20,6 @@ export const ProductShowcase: React.FC = () => {
       heat: 4,
       bg: 'bg-gradient-to-br from-[#E5812A] to-[#C7432A]',
       text: 'text-cream',
-      stripeLink: STRIPE_LINK_CLASSIC,
     },
     {
       id: 'tropical',
@@ -29,7 +31,6 @@ export const ProductShowcase: React.FC = () => {
       heat: 3,
       bg: 'bg-[#FDF6E3] border border-[#1F4E33]/10',
       text: 'text-[#1F4E33]',
-      stripeLink: STRIPE_LINK_TROPICAL,
     }
   ];
 
@@ -88,14 +89,12 @@ export const ProductShowcase: React.FC = () => {
                    </div>
                    
                    <div className="mt-auto pt-6 flex flex-col sm:flex-row sm:items-center gap-4 w-full">
-                     <a
-                       href={prod.stripeLink}
-                       target="_blank"
-                       rel="noopener noreferrer"
+                     <button
+                       onClick={() => onOpenOrder(prod.id as 'classic' | 'tropical', `product_showcase_${prod.id === 'classic' ? 'clasico' : 'tropical'}`)}
                        className={`w-full sm:w-auto text-center px-6 py-3 md:py-4 rounded-xl font-bold uppercase tracking-widest transition-transform hover:scale-105 active:scale-95 shadow-lg ${prod.id === 'classic' ? 'bg-[#C7432A] text-white hover:bg-black' : 'bg-[#1F4E33] text-white hover:bg-mango'}`}
                      >
                        Ordenar Ahora
-                     </a>
+                     </button>
                      <div className={`relative w-10 h-10 md:w-12 md:h-12 rounded-full border overflow-hidden ${prod.id === 'classic' ? 'border-cream/30' : 'border-[#1F4E33]/20'} flex-shrink-0`} title="Hecho en Costa Rica">
                        <img src="/images/costa_rica_flag_round.svg" className="absolute inset-0 w-full h-full object-cover scale-[1.05]" alt="Hecho en Costa Rica" /> 
                      </div>

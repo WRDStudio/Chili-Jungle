@@ -91,7 +91,11 @@ const recipes: Recipe[] = [
     }
 ];
 
-export const Recipes = () => {
+interface RecipesProps {
+    onOpenOrder: (product: 'classic' | 'tropical', source?: string) => void;
+}
+
+export const Recipes: React.FC<RecipesProps> = ({ onOpenOrder }) => {
     const { theme } = useRitual();
     const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
 
@@ -253,13 +257,18 @@ export const Recipes = () => {
                                         </div>
 
                                         <div className="mt-12 pt-8 border-t border-black/10">
-                                            <a 
-                                                href="#products" 
-                                                onClick={() => setSelectedRecipe(null)}
+                                            <button
+                                                onClick={() => {
+                                                    setSelectedRecipe(null);
+                                                    onOpenOrder(
+                                                        selectedRecipe.suggestedVariant === 'Tropical' ? 'tropical' : 'classic',
+                                                        selectedRecipe.suggestedVariant === 'Tropical' ? 'recipe_modal_tropical' : 'recipe_modal_clasico'
+                                                    );
+                                                }}
                                                 className="block w-full text-center px-8 py-4 bg-jungle text-white rounded-xl font-bold uppercase tracking-widest hover:bg-black transition-colors shadow-lg hover:shadow-xl hover:-translate-y-0.5"
                                             >
                                                 Ordenar Ahora
-                                            </a>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>

@@ -79,8 +79,16 @@ export const ChefJungleAI: React.FC = () => {
         <h2 className={`text-4xl md:text-7xl font-display uppercase mb-6 tracking-tighter ${theme.text}`}>
           TU TOQUE MAESTRO
         </h2>
-        <p className={`text-xl md:text-3xl font-serif italic opacity-90 mb-8 md:mb-12 max-w-2xl mx-auto ${theme.text}`}>
-          "¿Listo para llevar tu plato al siguiente nivel? Escribe lo que vas a comer y deja que el Chili Jungle Chef te diseñe el ritual perfecto."
+        <p className={`text-lg md:text-2xl font-serif italic opacity-90 mb-4 max-w-xl mx-auto ${theme.text}`}>
+          Tú describes el plato. Nosotros lo llevamos al paraíso.
+        </p>
+        <ol className={`text-sm md:text-base font-medium text-left max-w-sm mx-auto mb-8 md:mb-12 space-y-2 opacity-75 ${theme.text}`}>
+          <li><span className="font-bold">1.</span> Escoge tu ritual — cada uno crea una experiencia distinta.</li>
+          <li><span className="font-bold">2.</span> Escribe lo que vas a comer.</li>
+          <li><span className="font-bold">3.</span> Recibe el pairing perfecto del Chili Jungle Chef al instante.</li>
+        </ol>
+        <p className={`text-xs uppercase tracking-[0.2em] font-bold opacity-40 mb-8 md:mb-12 ${theme.text}`}>
+          From spicy lovers for spicy lovers
         </p>
         <div className="flex gap-2 md:gap-4 mb-8 md:mb-12">
           <input

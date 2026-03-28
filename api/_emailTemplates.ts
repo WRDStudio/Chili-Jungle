@@ -73,3 +73,120 @@ export function buildAutoReplyEmail(data: B2BFormData): {
     `,
   };
 }
+
+// ─── Direct Sales Order Templates ─────────────────────────────────────────────
+
+export interface DirectOrderData {
+  name: string;
+  email: string;
+  phone: string;
+  clasicoQty: number;
+  tropicalQty: number;
+  totalUnits: number;
+  totalUSD: number;
+  totalCRC: number;
+  province: string;
+  canton: string;
+  district: string;
+  address: string;
+  deliveryMethod: string;
+  notes?: string;
+  source?: string;
+  submittedAt?: string;
+}
+
+// ─── Internal notification to the sales team for Orders ───────────────────────
+export function buildDirectOrderSalesNotification(data: DirectOrderData): {
+  subject: string;
+  html: string;
+} {
+  return {
+    subject: `🛒 New Direct Order – ${data.name} – ${data.totalUnits} item(s)`,
+    html: `
+      <div style="font-family:sans-serif;max-width:600px;margin:auto;">
+        <h2 style="color:#C7432A;">Nuevo Pedido Directo</h2>
+        <h3 style="color:#333;margin-bottom:8px;">1. Cliente</h3>
+        <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
+          <tr><td style="padding:8px;font-weight:bold;background:#f5f5f5;">Nombre</td><td style="padding:8px;">${data.name}</td></tr>
+          <tr><td style="padding:8px;font-weight:bold;background:#f5f5f5;">Email</td><td style="padding:8px;">${data.email}</td></tr>
+          <tr><td style="padding:8px;font-weight:bold;background:#f5f5f5;">Teléfono</td><td style="padding:8px;">${data.phone}</td></tr>
+        </table>
+
+        <h3 style="color:#333;margin-bottom:8px;">2. Pedido & Precio (Server-calculated)</h3>
+        <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
+          <tr><td style="padding:8px;font-weight:bold;background:#f5f5f5;">Clásico</td><td style="padding:8px;">${data.clasicoQty} u.</td></tr>
+          <tr><td style="padding:8px;font-weight:bold;background:#f5f5f5;">Tropical</td><td style="padding:8px;">${data.tropicalQty} u.</td></tr>
+          <tr style="border-top:2px solid #ddd;"><td style="padding:8px;font-weight:bold;background:#f5f5f5;">Total de Botellas</td><td style="padding:8px;"><strong>${data.totalUnits} u.</strong></td></tr>
+          <tr><td style="padding:8px;font-weight:bold;background:#f5f5f5;">Total a Cobrar</td><td style="padding:8px;"><strong style="color:#C7432A;">$${data.totalUSD} USD / ₡${data.totalCRC} CRC</strong></td></tr>
+        </table>
+
+        <h3 style="color:#333;margin-bottom:8px;">3. Logística</h3>
+        <table style="width:100%;border-collapse:collapse;">
+          <tr><td style="padding:8px;font-weight:bold;background:#f5f5f5;">Método de Entrega</td><td style="padding:8px;">${data.deliveryMethod}</td></tr>
+          <tr><td style="padding:8px;font-weight:bold;background:#f5f5f5;">Provincia</td><td style="padding:8px;">${data.province}</td></tr>
+          <tr><td style="padding:8px;font-weight:bold;background:#f5f5f5;">Cantón</td><td style="padding:8px;">${data.canton}</td></tr>
+          <tr><td style="padding:8px;font-weight:bold;background:#f5f5f5;">Distrito</td><td style="padding:8px;">${data.district}</td></tr>
+          <tr><td style="padding:8px;font-weight:bold;background:#f5f5f5;">Dirección Exacta</td><td style="padding:8px;">${data.address}</td></tr>
+          ${data.notes ? `<tr><td style="padding:8px;font-weight:bold;background:#f5f5f5;">Notas del Cliente</td><td style="padding:8px;"><i>${data.notes}</i></td></tr>` : ''}
+        </table>
+        
+        <h3 style="color:#333;margin-bottom:8px;">4. Tracking</h3>
+        <table style="width:100%;border-collapse:collapse;">
+          <tr><td style="padding:8px;font-weight:bold;background:#f5f5f5;">Origen / Source</td><td style="padding:8px;">${data.source || 'direct'}</td></tr>
+          <tr><td style="padding:8px;font-weight:bold;background:#f5f5f5;">Enviado el</td><td style="padding:8px;">${data.submittedAt || new Date().toISOString()}</td></tr>
+        </table>
+        
+        <p style="color:#888;font-size:12px;margin-top:24px;">Enviado desde el formulario de pedido chilijungle.com</p>
+      </div>
+    `,
+  };
+}
+
+// ─── Customer confirmation receipt ──────────────────────────────────────────────
+export function buildDirectOrderCustomerConfirmation(data: DirectOrderData): {
+  subject: string;
+  html: string;
+} {
+  const firstName = data.name.trim().split(' ')[0];
+  return {
+    subject: `Tu pedido de Chili Jungle fue recibido`,
+    html: `
+      <div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;max-width:600px;margin:auto;background:#0A0A0A;color:#F3E5AB;padding:48px 40px;border-radius:20px;">
+
+        <p style="font-size:26px;font-weight:700;letter-spacing:-0.5px;margin:0 0 24px;">🔥 Hola ${firstName},<br/>tu pedido ha sido recibido.</p>
+
+        <p style="font-size:15px;line-height:1.7;color:#E5C97E;margin:0 0 12px;">
+          Nuestro equipo revisará tu orden y te contactará en las próximas <strong style="color:#F3E5AB;">24&ndash;48 horas</strong> para coordinar entrega y método de pago.
+        </p>
+
+        <p style="font-size:15px;line-height:1.7;color:#E5C97E;margin:0 0 32px;">
+          Gracias por confiar en Chili Jungle.
+        </p>
+
+        <div style="background:#141414;border:1px solid #2a2a2a;border-radius:12px;padding:24px;margin-bottom:32px;">
+          <p style="font-size:11px;text-transform:uppercase;letter-spacing:0.15em;color:#888;margin:0 0 16px;font-weight:700;">Tu Pedido</p>
+          <table style="width:100%;border-collapse:collapse;">
+            <tr>
+              <td style="padding:8px 0;font-size:14px;color:#aaa;">Cl&aacute;sico</td>
+              <td style="padding:8px 0;font-size:14px;color:#F3E5AB;text-align:right;font-weight:600;">${data.clasicoQty} u.</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;font-size:14px;color:#aaa;">Tropical</td>
+              <td style="padding:8px 0;font-size:14px;color:#F3E5AB;text-align:right;font-weight:600;">${data.tropicalQty} u.</td>
+            </tr>
+            <tr style="border-top:1px solid #2a2a2a;">
+              <td style="padding:12px 0 4px;font-size:15px;color:#F3E5AB;font-weight:700;">Total</td>
+              <td style="padding:12px 0 4px;font-size:18px;color:#E5812A;text-align:right;font-weight:700;">&#x20A1;${data.totalCRC.toLocaleString()} <span style="font-size:13px;color:#888;">($${data.totalUSD})</span></td>
+            </tr>
+          </table>
+        </div>
+
+        <hr style="border:none;border-top:1px solid #222;margin:0 0 28px;" />
+
+        <p style="font-size:14px;color:#F3E5AB;font-weight:700;letter-spacing:0.05em;margin:0 0 6px;">&mdash; Spice from Paradise Team</p>
+        <p style="margin:0;"><em style="font-size:12px;color:#555;">From spicy lovers for spicy lovers</em></p>
+
+      </div>
+    `,
+  };
+}
