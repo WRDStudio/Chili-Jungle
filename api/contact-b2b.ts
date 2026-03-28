@@ -1,10 +1,10 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { getResendClient, SALES_EMAIL, FROM_EMAIL } from './_resend';
+import { getResendClient, SALES_EMAIL, FROM_EMAIL } from './_resend.js';
 import {
   buildSalesNotificationEmail,
   buildAutoReplyEmail,
   type B2BFormData,
-} from './_emailTemplates';
+} from './_emailTemplates.js';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
