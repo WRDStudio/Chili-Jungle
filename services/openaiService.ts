@@ -11,8 +11,13 @@ export const generateRecipePairing = async (foodItem: string, ritualMode: string
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || 'Failed to fetch recipe from chef');
+      let errorData: any = {};
+      try {
+        errorData = await response.json();
+      } catch (e) {
+        // Fallback if Vercel returns HTML or string
+      }
+      throw new Error(errorData.error || `Chef service error: Status ${response.status}`);
     }
 
     const data = await response.json();

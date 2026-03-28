@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Sparkles, ChefHat, Loader2, UtensilsCrossed } from 'lucide-react';
-import { generateRecipePairing } from '../services/geminiService';
+import { generateRecipePairing } from '../services/openaiService';
 import { RecipeSuggestion } from '../types';
 import { useRitual } from '../contexts/RitualContext';
 
@@ -41,7 +41,7 @@ export const RecipeAI: React.FC = () => {
           <div>
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand-50 text-brand-700 rounded-full mb-6 border border-brand-100">
               <Sparkles size={18} />
-              <span className="text-sm font-bold uppercase tracking-wide">Powered by Gemini AI</span>
+              <span className="text-sm font-bold uppercase tracking-wide">Powered by OpenAI</span>
             </div>
             
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-6">
