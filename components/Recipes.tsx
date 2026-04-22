@@ -17,7 +17,7 @@ const recipes: Recipe[] = [
     {
         title: "Tacos al Pastor",
         description: "SPICY. FRESH. SALVAJE.",
-        image: "/images/TacosCJ.png",
+        image: "/images/TacosCJ.webp",
         ingredients: [
             "Tortillas de maíz recién echadas",
             "Carne al pastor marinada",
@@ -36,7 +36,7 @@ const recipes: Recipe[] = [
     {
         title: "Dumplings Caldosos",
         description: "SPICY. TENDER. SALVAJE.",
-        image: "/images/DumplingsCJ.png",
+        image: "/images/DumplingsCJ.webp",
         ingredients: [
             "Dumplings de cerdo o vegetales",
             "Salsa de soya baja en sodio",
@@ -55,7 +55,7 @@ const recipes: Recipe[] = [
     {
         title: "Alitas Salvajes",
         description: "SPICY. CRUNCHY. SALVAJE.",
-        image: "/images/WingsCJ.png",
+        image: "/images/WingsCJ.webp",
         ingredients: [
             "Alitas de pollo limpias y secas",
             "Harina sazonada con ajo y sal",
@@ -74,7 +74,7 @@ const recipes: Recipe[] = [
     {
         title: "Helado de Vainilla",
         description: "SPICY. SWEET. SALVAJE.",
-        image: "/images/VainillaCJ.png",
+        image: "/images/VainillaCJ.webp",
         ingredients: [
             "Helado de vainilla de alta calidad",
             "Chili Jungle",

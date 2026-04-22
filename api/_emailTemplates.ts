@@ -46,7 +46,7 @@ export function buildAutoReplyEmail(data: B2BFormData): {
       subject: '¡Gracias por contactar a Chili Jungle! 🌶️',
       html: `
         <div style="font-family:sans-serif;max-width:600px;margin:auto;background:#0A0A0A;color:#F3E5AB;padding:40px;border-radius:16px;">
-          <img src="https://www.chilijungle.com/images/logo_transparent2.png" alt="Chili Jungle" style="width:80px;margin-bottom:24px;" />
+          <img src="https://www.chilijungle.com/images/logo_transparent2.webp" alt="Chili Jungle" style="width:80px;margin-bottom:24px;" />
           <h2 style="color:#E5812A;">Hola, ${data.name} 👋</h2>
           <p>Gracias por tu interés en distribuir Chili Jungle. Hemos recibido tu mensaje y nuestro equipo de ventas te contactará en las próximas <strong>24–48 horas</strong>.</p>
           <p>Mientras tanto, visita nuestra web y vive el ritual 🌿🔥</p>
@@ -62,7 +62,7 @@ export function buildAutoReplyEmail(data: B2BFormData): {
     subject: 'Thanks for reaching out to Chili Jungle! 🌶️',
     html: `
       <div style="font-family:sans-serif;max-width:600px;margin:auto;background:#0A0A0A;color:#F3E5AB;padding:40px;border-radius:16px;">
-        <img src="https://www.chilijungle.com/images/logo_transparent2.png" alt="Chili Jungle" style="width:80px;margin-bottom:24px;" />
+        <img src="https://www.chilijungle.com/images/logo_transparent2.webp" alt="Chili Jungle" style="width:80px;margin-bottom:24px;" />
         <h2 style="color:#E5812A;">Hey, ${data.name} 👋</h2>
         <p>Thank you for your interest in distributing Chili Jungle. We've received your inquiry and our sales team will get back to you within <strong>24–48 hours</strong>.</p>
         <p>In the meantime, explore the experience 🌿🔥</p>

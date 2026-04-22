@@ -209,7 +209,7 @@ export const DirectOrderModal: React.FC<DirectOrderModalProps> = ({ isOpen, onCl
                         {/* Classic Selector */}
                         <div className="bg-[#111] border border-white/5 p-6 rounded-2xl flex flex-col items-center text-center gap-4">
                            <div className="flex flex-col items-center gap-3">
-                             <img src="/images/bottle-classic.png" alt="Clásico" className="h-28 object-contain drop-shadow-[0_0_15px_rgba(199,67,42,0.4)]" />
+                             <img src="/images/bottle-classic.webp" alt="Clásico" className="h-28 object-contain drop-shadow-[0_0_15px_rgba(199,67,42,0.4)]" />
                              <div>
                                <p className="text-cream font-bold tracking-widest uppercase text-xl">Clásico</p>
                                <p className="text-white/40 text-sm mt-1">$10 / ₡5K c/u</p>
@@ -225,7 +225,7 @@ export const DirectOrderModal: React.FC<DirectOrderModalProps> = ({ isOpen, onCl
                         {/* Tropical Selector */}
                         <div className="bg-[#111] border border-white/5 p-6 rounded-2xl flex flex-col items-center text-center gap-4">
                            <div className="flex flex-col items-center gap-3">
-                             <img src="/images/bottle-tropical.png" alt="Tropical" className="h-28 object-contain drop-shadow-[0_0_15px_rgba(31,78,51,0.5)]" />
+                             <img src="/images/bottle-tropical.webp" alt="Tropical" className="h-28 object-contain drop-shadow-[0_0_15px_rgba(31,78,51,0.5)]" />
                              <div>
                                <p className="text-cream font-bold tracking-widest uppercase text-xl">Tropical</p>
                                <p className="text-white/40 text-sm mt-1">$10 / ₡5K c/u</p>

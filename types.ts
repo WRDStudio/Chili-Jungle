@@ -29,3 +29,13 @@ export interface RitualTheme {
   buttonText: string;
   name: string;
 }
+
+export interface Track {
+  id: string;
+  title: string;
+  artist: string;
+  duration: string;
+  cover_url: string;
+  audio_url: string;
+  theme: 'luxe' | 'classic' | 'tropical';
+}

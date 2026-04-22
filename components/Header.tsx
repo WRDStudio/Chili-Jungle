@@ -17,18 +17,23 @@ export const Header: React.FC = () => {
       <img
         src="/images/Chili_Oil_Abstract.gif"
         alt=""
+        fetchPriority="low"
+        loading="lazy"
         className="absolute top-0 left-0 h-full w-auto pointer-events-none z-0 opacity-95 mix-blend-screen"
       />
       <img
         src="/images/Chili_Oil_Abstract.gif"
         alt=""
+        fetchPriority="low"
+        loading="lazy"
         className="absolute top-0 right-0 h-full w-auto scale-x-[-1] pointer-events-none z-0 opacity-95 mix-blend-screen"
       />
 
       <div className="max-w-7xl mx-auto px-4 lg:px-12 xl:px-24 flex justify-between items-center relative z-10 w-full min-h-[4rem] md:min-h-[6rem] lg:min-h-[8rem]">
         <motion.img
-          src="/images/logo_main.png.png"
+          src="/images/logo_main.png.webp"
           alt="Chili Jungle"
+          fetchPriority="high"
           className="h-16 md:h-24 lg:h-32 w-auto object-contain cursor-pointer drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)] ml-12 lg:ml-20"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}

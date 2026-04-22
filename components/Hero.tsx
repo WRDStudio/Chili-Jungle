@@ -161,6 +161,7 @@ export const Hero: React.FC = () => {
                   key={mode} // Key update triggers animation
                   src={currentPath}
                   alt="Bottle"
+                  fetchPriority="high"
                   className={`w-full h-full object-contain transition-all duration-700 ${mode === 'luxe' ? 'drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)] brightness-95' : mode === 'classic' ? 'drop-shadow-[0_25px_50px_rgba(199,67,42,0.4)] brightness-100' : 'drop-shadow-[0_25px_50px_rgba(0,100,0,0.2)] brightness-105'}`}
                   initial={{ opacity: 0, scale: 0.9, rotate: -5 }}
                   animate={{ opacity: 1, scale: mode === 'tropical' ? 1.05 : mode === 'classic' ? 1.02 : 1, rotate: 0 }}

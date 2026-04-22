@@ -11,7 +11,7 @@ export const RaizDelFuego: React.FC = () => {
     {
       emoji: "🌶️",
       name: "La Mezcla Salvaje",
-      img: "/images/ingredientes-mezcla.png",
+      img: "/images/ingredientes-mezcla.webp",
       emotional: "Donde todo comienza.",
       desc: "La armonía entre fuego, frescura y profundidad.",
       benefit: "Equilibra sabores complejos y crea una experiencia completa en cada gota."
@@ -19,7 +19,7 @@ export const RaizDelFuego: React.FC = () => {
     {
       emoji: "🔥",
       name: "Carolina Reaper",
-      img: "/images/ingredientes-reaper.png",
+      img: "/images/ingredientes-reaper.webp",
       emotional: "El corazón del fuego.",
       desc: "Intensidad extrema con carácter profundo.",
       benefit: "Estimula el metabolismo y libera endorfinas naturales."
@@ -27,7 +27,7 @@ export const RaizDelFuego: React.FC = () => {
     {
       emoji: "🌶️",
       name: "Chiles Secos",
-      img: "/images/ingredientes-chiles.png",
+      img: "/images/ingredientes-chiles.webp",
       emotional: "La herencia del calor.",
       desc: "Tostados lentamente para revelar dulzura y profundidad.",
       benefit: "Aportan antioxidantes y un perfil de sabor complejo."
@@ -35,7 +35,7 @@ export const RaizDelFuego: React.FC = () => {
     {
       emoji: "🧄",
       name: "Ajo Fresco",
-      img: "/images/ingredientes-ajo.png",
+      img: "/images/ingredientes-ajo.webp",
       emotional: "La base esencial.",
       desc: "Terrenal, potente y profundamente aromático.",
       benefit: "Propiedades antibacterianas y apoyo al sistema inmune."
@@ -43,7 +43,7 @@ export const RaizDelFuego: React.FC = () => {
     {
       emoji: "🌱",
       name: "Jengibre",
-      img: "/images/ingredientes-jengibre.png",
+      img: "/images/ingredientes-jengibre.webp",
       emotional: "El filo fresco.",
       desc: "Picante limpio con notas cítricas vibrantes.",
       benefit: "Favorece la digestión y reduce la inflamación."
@@ -51,7 +51,7 @@ export const RaizDelFuego: React.FC = () => {
     {
       emoji: "🌾",
       name: "Sésamo",
-      img: "/images/ingredientes-sesamo.png",
+      img: "/images/ingredientes-sesamo.webp",
       emotional: "El detalle tostado.",
       desc: "Aroma cálido y textura persistente.",
       benefit: "Rico en grasas saludables y minerales esenciales."
@@ -59,7 +59,7 @@ export const RaizDelFuego: React.FC = () => {
     {
       emoji: "🧂",
       name: "Sal Marina",
-      img: "/images/ingredientes-sal.png",
+      img: "/images/ingredientes-sal.webp",
       emotional: "El equilibrio perfecto.",
       desc: "Realza cada capa de sabor.",
       benefit: "Aporta minerales naturales y mejora la absorción."
@@ -67,7 +67,7 @@ export const RaizDelFuego: React.FC = () => {
     {
       emoji: "🌿",
       name: "Especias Aromáticas",
-      img: "/images/ingredientes-especias.png",
+      img: "/images/ingredientes-especias.webp",
       emotional: "El secreto profundo.",
       desc: "Anís estrella, canela y capas ocultas de sabor.",
       benefit: "Propiedades antioxidantes y digestivas."
@@ -75,7 +75,7 @@ export const RaizDelFuego: React.FC = () => {
     {
       emoji: "🛢️",
       name: "Aceite Infusionado",
-      img: "/images/ingredientes-aceite.png",
+      img: "/images/ingredientes-aceite.webp",
       emotional: "El vehículo del sabor.",
       desc: "Lento, preciso, lleno de carácter.",
       benefit: "Transporta y potencia cada ingrediente."
@@ -83,7 +83,7 @@ export const RaizDelFuego: React.FC = () => {
     {
       emoji: "🌿",
       name: "Tropical Blend",
-      img: "/images/ingredientes-cilantro.jpg",
+      img: "/images/ingredientes-cilantro.webp",
       emotional: <>El alma fresca de la selva <strong className="font-bold opacity-100">(incluidos solo en el producto Tropical)</strong>.</>,
       desc: "Verde, brillante y vibrante.",
       benefit: "Aporta frescura y equilibrio al picante."

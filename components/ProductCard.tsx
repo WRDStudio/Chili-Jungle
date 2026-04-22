@@ -5,9 +5,10 @@ import { Flame, ShoppingCart } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
+  onOpenOrder?: () => void;
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenOrder }) => {
   return (
     <div className="group relative bg-white rounded-2xl shadow-xl shadow-gray-200 overflow-hidden border border-gray-100 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl flex flex-col h-full">
       {/* Image */}
@@ -52,7 +53,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
         <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
           <span className="text-lg font-bold text-ink tracking-tight">${product.price.toFixed(2)}</span>
-          <button className="flex items-center justify-center gap-2 bg-ink text-cream px-4 py-2.5 rounded-lg hover:bg-chili transition-colors font-bold text-xs uppercase tracking-[0.15em]">
+          <button onClick={onOpenOrder} className="flex items-center justify-center gap-2 bg-ink text-cream px-4 py-2.5 rounded-lg hover:bg-chili transition-colors font-bold text-xs uppercase tracking-[0.15em]">
             <ShoppingCart size={16} /> Add to Cart
           </button>
         </div>

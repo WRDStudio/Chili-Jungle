@@ -8,14 +8,14 @@ export const Origin: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const galleryImages = [
-    '/images/gallery_1.jpg',
-    '/images/gallery_2.png',
-    '/images/gallery_3.jpg',
-    '/images/gallery_4.jpg',
-    '/images/gallery_5.png',
-    '/images/gallery_6.jpg',
-    '/images/gallery_7.jpg',
-    '/images/gallery_8.jpg'
+    '/images/gallery_1.webp',
+    '/images/gallery_2.webp',
+    '/images/gallery_3.webp',
+    '/images/gallery_4.webp',
+    '/images/gallery_5.webp',
+    '/images/gallery_6.webp',
+    '/images/gallery_7.webp',
+    '/images/gallery_8.webp'
   ];
 
   const nextSlide = () => {
@@ -37,7 +37,7 @@ export const Origin: React.FC = () => {
     <section id="origin" className={`py-24 scroll-mt-20 md:scroll-mt-28 lg:scroll-mt-36 ${theme.bg}`}>
       <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-16 items-center">
         <img
-          src="/images/Tamarindo_sunset_2025.jpg"
+          src="/images/Tamarindo_sunset_2025.webp"
           alt="Sunset in Tamarindo"
           className="rounded-3xl shadow-2xl object-cover h-[400px] w-full hover:scale-[1.02] transition-transform duration-500"
         />
